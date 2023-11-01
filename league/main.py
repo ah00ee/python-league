@@ -44,8 +44,8 @@ class LeagueAPI:
         return -> List[string]
         """
         
-        summonerDto = self._get_summonerDto(summoner_name=summoner_name)
-        puuid = summonerDto['puuid']
+        summoner = self._get_summoner(summoner_name=summoner_name)
+        puuid = summoner['puuid']
         
         url = f'https://{self.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids'
         res = requests.get(
@@ -66,10 +66,10 @@ class LeagueAPI:
 
         return res.json()
 
-    def get_summonerDto(self, summoner_name):
-        return self._get_summonerDto(summoner_name=summoner_name)
+    def get_summoner(self, summoner_name):
+        return self._get_summoner(summoner_name=summoner_name)
 
-    def _get_summonerDto(self, summoner_name):
+    def _get_summoner(self, summoner_name):
         url = f'https://{self.platform}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summoner_name}'
         res = requests.get(
                         url=url,
@@ -81,8 +81,23 @@ class LeagueAPI:
 
         return res.json()
 
-    def get_matchDto(self, matchId):
+    def get_match(self, matchId):
         url = f'https://{self.region}.api.riotgames.com/lol/match/v5/matches/{matchId}'
+        res = requests.get(
+                        url=url,
+                        headers={
+                            "X-Riot-Token":self.api_key
+                        }
+                )
+        res.raise_for_status()
+
+        return res.json()
+
+    def get_champion_mastery(self, summoner_name):
+        summoner = self._get_summoner(summoner_name=summoner_name)
+        puuid = summoner['puuid']
+
+        url = f'https://kr.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{puuid}'
         res = requests.get(
                         url=url,
                         headers={
@@ -98,6 +113,6 @@ class LeagueAPI:
 if __name__ == '__main__':
     lol = LeagueAPI(api_key="Your API KEY")
     
-    summoner = lol.get_summonerDto(summoner_name="소환사 명")
+    summoner = lol.get_summoner(summoner_name="소환사 명")
     matchIds = lol.get_recent_matchId(summoner_name="소환사 명")
-    match = lol.get_matchDto(matchId="matchId")
+    match = lol.get_match(matchId="matchId")
