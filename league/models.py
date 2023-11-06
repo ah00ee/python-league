@@ -15,15 +15,12 @@ class Summoner:
                 ):
         """Get a list of match ids by puuid
 
-        summoner_name: str      #소환사 명.
         startTime: long         #Epoch timestamp in seconds. (>06-16-2021)
         endTime: long           #Epoch timestamp in seconds.
         queue: int              #
         type: string            #
         start: int              #Defaults to 0. Start index.
         count: int              #Defaults to 20. (valid: 0 to 100)
-
-        return -> List[string]
         """    
         url = f'https://{self.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{self.puuid}/ids'
 
@@ -38,7 +35,7 @@ class Summoner:
                         })
 
     def get_champion_mastery(self):
-        """Get a list of match ids by puuid
+        """Get all champion mastery entries sorted by number of champion points descending
         """
         url = f'https://{self.platform}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{self.puuid}'
         res = self.api_handler.request(url=url)

@@ -10,6 +10,8 @@ class LeagueAPI:
         self.region = region
 
     def get_summoner(self, summoner_name):
+        """Get a summoner by summoner name
+        """
         return self._get_summoner(summoner_name=summoner_name)
 
     def _get_summoner(self, summoner_name):
@@ -24,6 +26,8 @@ class LeagueAPI:
                 )
 
     def get_match(self, matchId):
+        """Get a match by match id
+        """
         return self._get_match(matchId=matchId)
 
     def _get_match(self, matchId):
