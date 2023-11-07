@@ -1,12 +1,20 @@
-import json
 import requests
 
 
-def champion_data():
-    with open("dragontail-13.21.1/13.21.1/data/ko_KR/champion.json") as f:
-        data = json.loads(f.read())
+class DataDragon:
+    """
+    Currently in python-league, it only supports '/ko_KR/champion.json'
 
-        return data    
+    **It is not always updated immediately after a patch according to Riot Games.**
+    """
+    def __init__(self) -> None:
+        self.base_url = "https://ddragon.leagueoflegends.com/cdn/"
+        self.version = "13.12.1"
+
+    def champion_data(self):
+        data = requests.get(self.base_url+self.version+"/data/ko_KR/champion.json")
+       
+        return data.json()
 
 
 class UrlHandler:

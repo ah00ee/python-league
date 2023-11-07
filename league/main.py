@@ -1,5 +1,5 @@
 from .models import Summoner, Match, Champion
-from .utils import UrlHandler, champion_data
+from .utils import UrlHandler, DataDragon
 
 
 class LeagueAPI:
@@ -8,6 +8,7 @@ class LeagueAPI:
         self.api_handler = UrlHandler(api_key=api_key)
         self.platform = platform
         self.region = region
+        self.dd = DataDragon()
 
     def get_summoner(self, summoner_name):
         """Get a summoner by summoner name
@@ -47,7 +48,7 @@ class LeagueAPI:
 
     def get_champion_by_id(self, championId):
         champion = {}
-        data = champion_data()
+        data = self.dd.champion_data()
         for _, v in data["data"].items():  
             champion[v["key"]] = v
         try:
@@ -56,7 +57,7 @@ class LeagueAPI:
             raise KeyError("It's not valid championId")
                 
     def get_champion_by_name(self, championName):
-        data = champion_data()
+        data = self.dd.champion_data()
         try:
             return Champion(**data["data"][championName])
         except KeyError:
@@ -68,3 +69,4 @@ if __name__ == "__main__":
 
     summoner = lol.get_summoner(summoner_name="summoner name")
     champion_mastery = summoner.get_all_champion_mastery() #champion mastery list of *summoner*
+
