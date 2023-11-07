@@ -1,4 +1,12 @@
+import json
 import requests
+
+
+def champion_data():
+    with open("dragontail-13.21.1/13.21.1/data/ko_KR/champion.json") as f:
+        data = json.loads(f.read())
+
+        return data    
 
 
 class UrlHandler:
@@ -24,3 +32,4 @@ class UrlHandler:
         res.raise_for_status()
 
         return res.json()
+

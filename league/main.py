@@ -1,5 +1,5 @@
-from .models import Summoner, Match
-from .utils import UrlHandler
+from .models import Summoner, Match, Champion
+from .utils import UrlHandler, champion_data
 
 
 class LeagueAPI:
@@ -36,9 +36,35 @@ class LeagueAPI:
 
         return Match(**res)
 
+    def get_champion_rotations(self):
+        """Returns free champion ids and free champion ids for new players
+            - Maximum new player level is res["maxNewPlayerLevel"].
+        """
+        url = f'https://{self.platform}.api.riotgames.com/lol/platform/v3/champion-rotations'
+        res = self.api_handler.request(url=url)
+
+        return res
+
+    def get_champion_by_id(self, championId):
+        champion = {}
+        data = champion_data()
+        for _, v in data["data"].items():  
+            champion[v["key"]] = v
+        try:
+            return Champion(**champion[str(championId)])
+        except KeyError:
+            raise KeyError("It's not valid championId")
+                
+    def get_champion_by_name(self, championName):
+        data = champion_data()
+        try:
+            return Champion(**data["data"][championName])
+        except KeyError:
+            raise KeyError("It's not valid championName")
+
 
 if __name__ == "__main__":
-    lol = LeagueAPI(api_key="Your API Key")
+    lol = LeagueAPI(api_key="Your API KEY")
 
     summoner = lol.get_summoner(summoner_name="summoner name")
-    champion_mastery = summoner.get_champion_mastery() #champion mastery list of *summoner*
+    champion_mastery = summoner.get_all_champion_mastery() #champion mastery list of *summoner*
