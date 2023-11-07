@@ -1,3 +1,4 @@
+# Models for LeagueAPI
 
 
 class Summoner:
@@ -14,6 +15,8 @@ class Summoner:
                     count=20
                 ):
         """Get a list of match ids by puuid
+
+        === params ===
 
         startTime: long         #Epoch timestamp in seconds. (>06-16-2021)
         endTime: long           #Epoch timestamp in seconds.
@@ -34,11 +37,31 @@ class Summoner:
                             "count": count
                         })
 
-    def get_champion_mastery(self):
-        """Get all champion mastery entries sorted by number of champion points descending
+    def get_all_champion_mastery(self):
+        """Get all champion mastery entries sorted by number of champion points descending.
         """
         url = f'https://{self.platform}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{self.puuid}'
         res = self.api_handler.request(url=url)
+
+        return [ChampionMastery(**r) for r in res]
+
+    def get_champion_mastery_by_championId(self, championId):
+        """Get a champion mastery by puuid and champion ID.
+
+        === params ===
+
+        count: int          #defaults to 3.
+        """
+        url = f'https://{self.platform}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{self.puuid}'
+        res = self.api_handler.request(url=url+f"/by-champion/{championId}")
+
+        return ChampionMastery(**res)
+      
+    def get_top_champion_mastery(self, count:int=None):
+        """Get specified number of top champion mastery entries sorted by number of champion points descending.
+        """
+        url = f'https://{self.platform}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{self.puuid}'
+        res = self.api_handler.request(url=url+"/top", params={"count": count})
 
         return [ChampionMastery(**r) for r in res]
 
@@ -52,3 +75,14 @@ class ChampionMastery:
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
 
+
+class Champion:
+    def __init__(self, **kwargs):
+        self.id = kwargs["key"]
+        self.name = kwargs["id"]
+        self.stats = kwargs["stats"]
+
+    def __str__(self) -> str:
+        return self.id + " " + self.name
+
+        
