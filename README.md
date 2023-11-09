@@ -1,10 +1,14 @@
 # python-league
-Python-league helps you to use League of Legends API.
+Python-league는 Riot API를 사용하여 간편하게 리그 오브 레전드(롤) 데이터를 사용할 수 있도록 만든 python 라이브러리입니다.
 
 ## Installation
+![Generic badge](https://img.shields.io/badge/pypi-v0.0.5-yellow.svg)
 ```
 pip install python-league --upgrade
 ```
+
+## Tutorial
+Here's <a href="https://github.com/ah00ee/python-league/blob/main/tutorial.ipynb">tutorial</a> for your information.
 
 ## How to use
 ```python
@@ -12,17 +16,6 @@ from league import LeagueAPI
 
 lol = LeagueAPI(api_key="Your API KEY")
 
-# 소환사 정보 가져오기
 summoner = lol.get_summoner(summoner_name="summoner name")
-
-# 소환사의 챔피언 숙련도 불러오기
-champion_mastery = summoner.get_all_champion_mastery() #champion mastery list of *summoner*
-
-# 챔피언 정보 불러오기
-# 1. id로 불러오기
-champion = lol.get_champion_by_id(championID="champion id")
-# 2. 이름으로 불러오기(en)
-champion = lol.get_champion_by_name("Aatrox") # 아트록스
-
-print(champion)
+print(summoner.__dict__)
 ```
