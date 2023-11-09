@@ -7,14 +7,24 @@ class DataDragon:
 
     **It is not always updated immediately after a patch according to Riot Games.**
     """
-    def __init__(self) -> None:
-        self.base_url = "https://ddragon.leagueoflegends.com/cdn/"
-        self.version = "13.12.1"
+    def __init__(self, version="13.21.1", language="ko_KR") -> None:
+        self.base_url = "https://ddragon.leagueoflegends.com/"
+        self.version = self._check_version(version)
+        self.language = language
 
     def champion_data(self):
-        data = requests.get(self.base_url+self.version+"/data/ko_KR/champion.json")
-       
+        data = requests.get(f"{self.base_url}cdn/{self.version}/data/{self.language}/champion.json")
+    
         return data.json()
+
+    def _check_version(self, version):
+        versions = requests.get(self.base_url+"api/versions.json")
+        
+        versions = versions.json()
+        if version in versions:
+            return version
+        else:
+            raise ValueError("It's not valid version")
 
 
 class UrlHandler:
@@ -40,4 +50,3 @@ class UrlHandler:
         res.raise_for_status()
 
         return res.json()
-
