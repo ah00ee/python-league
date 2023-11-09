@@ -19,3 +19,6 @@ lol = LeagueAPI(api_key="Your API KEY")
 summoner = lol.get_summoner(summoner_name="summoner name")
 print(summoner.__dict__)
 ```
+
+## Warning
+라이브러리 사용을 위해 Development API KEY를 발급받은 경우, Riot Games에서 rate limit을 1초에 20 requests, 2분에 100 requests로 제한하고 있습니다. 
