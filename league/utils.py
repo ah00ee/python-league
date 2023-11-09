@@ -14,7 +14,7 @@ class DataDragon:
 
     def champion_data(self):
         data = requests.get(f"{self.base_url}cdn/{self.version}/data/{self.language}/champion.json")
-       
+    
         return data.json()
 
     def _check_version(self, version):
@@ -22,7 +22,7 @@ class DataDragon:
         
         versions = versions.json()
         if version in versions:
-            self.version = version
+            return version
         else:
             raise ValueError("It's not valid version")
 
