@@ -11,3 +11,8 @@ def api():
                 region="region"
     )
     return api
+
+@pytest.fixture()
+def summoner(api):
+    return api.get_summoner("Colleen")
+
