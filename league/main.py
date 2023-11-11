@@ -10,13 +10,31 @@ class LeagueAPI:
         self.region = region
         self.dd = DataDragon()
 
-    def get_summoner(self, summoner_name):
+    def get_summoner_by_name(self, summoner_name):
         """Get a summoner by summoner name
         """
-        return self._get_summoner(summoner_name=summoner_name)
-
-    def _get_summoner(self, summoner_name):
         url = f'https://{self.platform}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summoner_name}'
+        return self._get_summoner(url)
+
+    def get_summoner_by_puuid(self, puuid):
+        """Get a summoner by PUUID
+        """
+        url = f'https://{self.platform}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/{puuid}'
+        return self._get_summoner(url)
+
+    def get_summoner_by_summonerId(self, id):
+        """Get a summoner by summoner ID
+        """
+        url = f'https://{self.platform}.api.riotgames.com/lol/summoner/v4/summoners/{id}'
+        return self._get_summoner(url)
+
+    def get_summoner_by_accountId(self, accountId):
+        """Get a summoner by account ID
+        """
+        url = f'https://{self.platform}.api.riotgames.com/lol/summoner/v4/summoners/by-account/{accountId}'
+        return self._get_summoner(url)
+
+    def _get_summoner(self, url):
         res = self.api_handler.request(url=url)
 
         return Summoner(
@@ -67,6 +85,6 @@ class LeagueAPI:
 if __name__ == "__main__":
     lol = LeagueAPI(api_key="Your API KEY")
 
-    summoner = lol.get_summoner(summoner_name="summoner name")
+    summoner = lol.get_summoner_by_name(summoner_name="summoner name")
     champion_mastery = summoner.get_all_champion_mastery() #champion mastery list of *summoner*
 
