@@ -10,14 +10,36 @@ pip install python-league --upgrade
 ## Tutorial
 Here's <a href="https://github.com/ah00ee/python-league/blob/main/tutorial.ipynb">tutorial</a> for your information.
 
+
+## Region & Platform values
+|Region|Platform|
+|--|--|
+|America|NA1|
+||BR1|
+||LA1|
+||LA2|
+|Asia|JP1|
+||KR|
+||PH2|
+||SG2|
+||TH2|
+||TW2|
+||VN2|
+|Europe|EUN1|
+||EUW1|
+||TR1|
+||RU|
+|Sea|OC1|
+
+
 ## How to use
 ```python
 from league import LeagueAPI
 
 lol = LeagueAPI(api_key="Your API KEY")
 
-summoner = lol.get_summoner(summoner_name="summoner name")
-print(summoner.__dict__)
+summoner = lol.get_summoner_by_name(summoner_name="summoner name")
+print(summoner.info())
 ```
 
 ## Warning
