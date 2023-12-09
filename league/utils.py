@@ -3,7 +3,9 @@ import requests
 
 class DataDragon:
     """
-    Currently in python-league, it only supports '/ko_KR/champion.json'
+    Currently, the latest version is 13.12.1
+
+    - To get different language result, set different language parameter.
 
     **It is not always updated immediately after a patch according to Riot Games.**
     """
@@ -12,10 +14,10 @@ class DataDragon:
         self.version = self._check_version(version)
         self.language = language
 
-    def champion_data(self):
-        data = requests.get(f"{self.base_url}cdn/{self.version}/data/{self.language}/champion.json")
+    def all_champion_data(self):
+        data = requests.get(f"{self.base_url}cdn/{self.version}/data/{self.language}/champion.json").json()
     
-        return data.json()
+        return data['data']
 
     def _check_version(self, version):
         versions = requests.get(self.base_url+"api/versions.json")
