@@ -1,4 +1,4 @@
-# Models for LeagueAPI
+# league/models.py
 
 
 class Summoner:
@@ -6,24 +6,33 @@ class Summoner:
         self.api_handler = api_handler
         self.__dict__.update(kwargs)
 
+
+    def info(self):
+        self.__dict__.pop('api_handler')
+        return self.__dict__
+    
+    
     def get_recent_matchId(self, 
                     startTime=None,
                     endTime=None,
                     queue=None,
                     type=None,
-                    start=0,
-                    count=20
+                    start=None,
+                    count=None
                 ):
         """Get a list of match ids by puuid
 
         === params ===
-
-        startTime: long         #Epoch timestamp in seconds. (>06-16-2021)
-        endTime: long           #Epoch timestamp in seconds.
-        queue: int              #
-        type: string            #
-        start: int              #Defaults to 0. Start index.
-        count: int              #Defaults to 20. (valid: 0 to 100)
+        startTime: long         
+        : Epoch timestamp in seconds. (>06-16-2021)
+        endTime: long           
+        : Epoch timestamp in seconds.
+        queue: int              
+        type: string            
+        start: int              
+        : Defaults to 0. Start index.
+        count: int              
+        : Defaults to 20. (valid: 0 to 100)
         """    
         url = f'https://{self.region}.api.riotgames.com/lol/match/v5/matches/by-puuid/{self.puuid}/ids'
 
@@ -59,6 +68,8 @@ class Summoner:
       
     def get_top_champion_mastery(self, count:int=None):
         """Get specified number of top champion mastery entries sorted by number of champion points descending.
+
+            count: default 3.
         """
         url = f'https://{self.platform}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{self.puuid}'
         res = self.api_handler.request(url=url+"/top", params={"count": count})
@@ -79,10 +90,6 @@ class ChampionMastery:
 class Champion:
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
-        self.id = kwargs["key"]
-        self.key = kwargs["id"]
 
     def __str__(self) -> str:
-        return self.id + " " + self.key
-
-        
+        return self.key + " " + self.id

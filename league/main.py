@@ -8,15 +8,40 @@ class LeagueAPI:
         self.api_handler = UrlHandler(api_key=api_key)
         self.platform = platform
         self.region = region
-        self.dd = DataDragon()
 
-    def get_summoner(self, summoner_name):
+    def get_summoner_by_riotId(self, gameName, tagLine):
+        """Get a summoner by riot id (gameName + tagLine)
+
+            Return -> puuid
+        """
+        url = f'https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}'
+        return self._get_summoner(url)
+
+    def get_summoner_by_name(self, summoner_name):
         """Get a summoner by summoner name
         """
-        return self._get_summoner(summoner_name=summoner_name)
-
-    def _get_summoner(self, summoner_name):
         url = f'https://{self.platform}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{summoner_name}'
+        return self._get_summoner(url)
+
+    def get_summoner_by_puuid(self, puuid):
+        """Get a summoner by PUUID
+        """
+        url = f'https://{self.platform}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/{puuid}'
+        return self._get_summoner(url)
+
+    def get_summoner_by_summonerId(self, id):
+        """Get a summoner by summoner ID
+        """
+        url = f'https://{self.platform}.api.riotgames.com/lol/summoner/v4/summoners/{id}'
+        return self._get_summoner(url)
+
+    def get_summoner_by_accountId(self, accountId):
+        """Get a summoner by account ID
+        """
+        url = f'https://{self.platform}.api.riotgames.com/lol/summoner/v4/summoners/by-account/{accountId}'
+        return self._get_summoner(url)
+
+    def _get_summoner(self, url):
         res = self.api_handler.request(url=url)
 
         return Summoner(
@@ -46,27 +71,24 @@ class LeagueAPI:
 
         return res
 
-    def get_champion_by_id(self, championId):
-        champion = {}
-        data = self.dd.champion_data()
-        for _, v in data["data"].items():  
-            champion[v["key"]] = v
-        try:
-            return Champion(**champion[str(championId)])
-        except KeyError:
-            raise KeyError("It's not valid championId")
-                
-    def get_champion_by_name(self, championName):
-        data = self.dd.champion_data()
-        try:
-            return Champion(**data["data"][championName])
-        except KeyError:
-            raise KeyError("It's not valid championName")
 
+def get_champion_by_id(championId, dd:DataDragon):
+    champion = {}
+    data = dd.all_champion_data()
+    for _, v in data.items():  
+        champion[v["key"]] = v
+    try:
+        return Champion(**champion[str(championId)])
+    except KeyError:
+        raise KeyError("It's not valid championId")
+            
 
-if __name__ == "__main__":
-    lol = LeagueAPI(api_key="Your API KEY")
-
-    summoner = lol.get_summoner(summoner_name="summoner name")
-    champion_mastery = summoner.get_all_champion_mastery() #champion mastery list of *summoner*
-
+def get_champion_by_name(championName, dd:DataDragon):
+    """
+    Example => Lux(O), lux(X), LUX(X)
+    """
+    data = dd.all_champion_data()
+    try:
+        return Champion(**data[championName])
+    except KeyError:
+        raise KeyError("It's not valid championName")
