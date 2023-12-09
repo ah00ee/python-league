@@ -1,6 +1,11 @@
 # python-league
 Python-league는 Riot API를 사용하여 간편하게 리그 오브 레전드(롤) 데이터를 사용할 수 있도록 만든 python 라이브러리입니다.
 
+# NOTICE
+RiotGames is now recommending using Riot ID instead of summonerName. It supports getting information by summonerName right now, but it will be unsupported in the future.
+
+<img src="img/example_riot_id.png" alt="example_riot_id" width=400>
+
 ## Installation
 ![Generic badge](https://img.shields.io/badge/pypi-v0.0.5-yellow.svg)
 ```
@@ -9,7 +14,6 @@ pip install python-league --upgrade
 
 ## Tutorial
 Here's <a href="https://github.com/ah00ee/python-league/blob/main/tutorial.ipynb">tutorial</a> for your information.
-
 
 ## Region & Platform values
 |Region|Platform|
